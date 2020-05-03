@@ -6,17 +6,17 @@ import java.util.List;
 public abstract class Pessoa {
 	private int codigo;
 	protected String nome;
-	private List<Emprestimo> emprestimosRealizados = new ArrayList<Emprestimo>();
+	private List<EmprestimoSimples> emprestimosRealizados = new ArrayList<EmprestimoSimples>();
 
 
-	public Pessoa( int codigo, String nome) {
+	public Pessoa(int codigo, String nome) {
 		super();
 		this.codigo = codigo;
 		this.nome = nome;
 	}
 	
-	public Emprestimo getEmprestimo(String nomeLivro) {
-		for (Emprestimo livro : emprestimosRealizados) {
+	public EmprestimoSimples getEmprestimo(String nomeLivro) {
+		for (EmprestimoSimples livro : emprestimosRealizados) {
 			if (livro.getLivro().getNomeLivro().contentEquals(nomeLivro)) {
 				return livro;
 			}
@@ -24,7 +24,7 @@ public abstract class Pessoa {
 		return null;
 	}
 
-	public List<Emprestimo> getEmprestimosRealizados() {
+	public List<EmprestimoSimples> getEmprestimosRealizados() {
 		return emprestimosRealizados;
 	}
 	

@@ -9,11 +9,11 @@ public class LivroDAO {
 	public static List<Livro> livrosList = new ArrayList<Livro>();
 
 	public static void addLivros() {
-		livrosList.add(new Livro("Java", 3, "Stephen King", 2013));
-		livrosList.add(new Livro("C++", 1,"Stephen King", 1977));
-		livrosList.add(new Livro("Python", 1,"Stephen King", 1990));
-		livrosList.add(new Livro("Ruby", 1,"Stephen King", 1975));
-		livrosList.add(new Livro("JavaScript", 1,"Stephen King", 2011));
+		livrosList.add(new Livro("Java", "Stephen King", 2013, 0.8f, 1.0f));
+		livrosList.add(new Livro("C++","Stephen King", 1977, 0.5f, 0.8f));
+		livrosList.add(new Livro("Python","Stephen King", 1990, 0.3f, 0.5f));
+		livrosList.add(new Livro("Ruby","Stephen King", 1975, 0.7f, 0.9f));
+		livrosList.add(new Livro("JavaScript","Stephen King", 2011, 1.0f, 0.8f));
 	}
 
 	public static Livro getLivro(String nome) {
