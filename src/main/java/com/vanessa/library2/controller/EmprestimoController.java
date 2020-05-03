@@ -17,6 +17,8 @@ import com.vanessa.library2.entities.Livro;
 
 public class EmprestimoController {
 	Scanner t = new Scanner(System.in);
+	DecimalFormat df = new DecimalFormat("0.00");
+
 
 	public void realizaEmprestimoSimples() {
 		System.out.println("\nDigite o nome do aluno: ");
@@ -33,7 +35,12 @@ public class EmprestimoController {
 			if (bibliotecarioEmprestimo.getFuncao().contentEquals("emprestimo")) {
 				alunoEmprestimo.getEmprestimosRealizados().add(new EmprestimoSimples(alunoEmprestimo,
 						bibliotecarioEmprestimo, livroEmprestimo, diasEmprestimo));
+
+				System.out.println(livroEmprestimo);
+				System.out.println("\nTaxa em caso de atraso: R$ " + df.format(livroEmprestimo.getTaxaAtraso())
+				+ " por dia.\nPeso do livro: " + df.format(livroEmprestimo.getPeso()) + " kg.");
 				System.out.println("\nEmpréstimo realizado com sucesso!");
+				
 			} else {
 				System.out.println("Funcionário não permitido!");
 			}
@@ -45,7 +52,7 @@ public class EmprestimoController {
 	public void realizaEmprestimoComposto() {
 		List<EmprestimoLivro> emprestimosList = new ArrayList<EmprestimoLivro>();
 
-		System.out.println("Digite o nome do aluno: ");
+		System.out.println("\nDigite o nome do aluno: ");
 		Aluno alunoEmprestimo = AlunoDAO.getAluno(t.next());
 		System.out.println("Digite o nome do funcionario: ");
 		Bibliotecario bibliotecarioEmprestimo = BibliotecarioDAO.getBibliotecario(t.next());
@@ -62,25 +69,24 @@ public class EmprestimoController {
 							livroEmprestimo, diasEmprestimo);
 					alunoEmprestimo.getEmprestimosRealizados().add((EmprestimoSimples) emprestimo);
 					emprestimosList.add(emprestimo);
-
-					System.out.println("Adicionado com sucesso.");
+					System.out.println("\nAdicionado com sucesso.");
 				}
 			}
 
-			System.out.println("\n[1] Adicionar mais livros");
-			System.out.println("[0] Finalizar empréstimo");
+			System.out.println("\n[1] Emprestar mais um livro");
+			System.out.println("[0] Concluir empréstimo");
 
 			int saindo = t.nextInt();
 
 			System.out.println();
 
 			if (saindo == 0) {
-				DecimalFormat df = new DecimalFormat("0.00");
-
 				EmprestimoLivro composto = new EmprestimoComposto(emprestimosList, 10);
 				System.out.println(composto);
 				System.out.println("Taxa total em caso de atraso: R$ " + df.format(composto.getTaxaAtraso())
-						+ " reais.\nPeso total dos livros: " + df.format(composto.getPeso()) + " kg.");
+						+ " por dia.\nPeso total dos livros: " + df.format(composto.getPeso()) + " kg.");
+				System.out.println("\nEmpréstimo realizado com sucesso!");
+
 				break;
 			}
 

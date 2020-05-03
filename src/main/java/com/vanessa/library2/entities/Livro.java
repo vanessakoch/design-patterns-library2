@@ -52,7 +52,7 @@ public class Livro {
 	public String toString() {
 		DecimalFormat df = new DecimalFormat("0.00");
 
-		return "Livro: " + nomeLivro + ", autor: " + autor + ", ano: " + ano + ", taxa de atraso: R$" 
+		return "Livro: " + nomeLivro + ", autor: " + autor + ", ano: " + ano + ", taxa de atraso: R$ " 
 			+ df.format(taxaAtraso) + ", peso: " + df.format(peso) + " kg";
 	}
 }

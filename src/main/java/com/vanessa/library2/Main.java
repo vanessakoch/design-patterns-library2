@@ -1,5 +1,6 @@
 package com.vanessa.library2;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.vanessa.library2.controller.DevolucaoController;
@@ -8,11 +9,13 @@ import com.vanessa.library2.dao.AlunoDAO;
 import com.vanessa.library2.dao.BibliotecarioDAO;
 import com.vanessa.library2.dao.LivroDAO;
 import com.vanessa.library2.entities.Aluno;
+import com.vanessa.library2.entities.EmprestimoSimples;
+
 
 public class Main {
+	static Scanner t = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		Scanner t = new Scanner(System.in);
 
 		LivroDAO.addLivros();
 		AlunoDAO.addAlunos();
@@ -48,8 +51,8 @@ public class Main {
 				break;
 
 			case 2:
-				System.out.println("[1] Emprestar um livro");
-				System.out.println("[2] Emprestar mais livros");
+				System.out.println("[1] Emprestar apenas um livro");
+				System.out.println("[2] Emprestar vários livros");
 				int numero = t.nextInt();
 				switch (numero) {
 
@@ -78,15 +81,15 @@ public class Main {
 			case 4:
 				System.out.println("\nDigite o nome do aluno: ");
 				Aluno alunoEmprestimos = AlunoDAO.getAluno(t.next());
-
-				if (alunoEmprestimos != null) {
-					for (int i = 0; i < alunoEmprestimos.getEmprestimosRealizados().size(); i++) {
-						System.out.println(alunoEmprestimos.getEmprestimosRealizados().get(i));
+				List<EmprestimoSimples> seuEmprestimo = alunoEmprestimos.getEmprestimosRealizados();
+				
+				if (alunoEmprestimos != null && seuEmprestimo.size() > 0) {
+					System.out.println("\nEmpréstimos de " + alunoEmprestimos.getNome() + ":");
+					for (int i = 0; i < seuEmprestimo.size(); i++) {
+						System.out.println(seuEmprestimo.get(i) + ", dias de empréstimo: " + seuEmprestimo.get(i).getDiasEmprestimo());
 					}
-
 				} else {
-
-					System.out.println("Aluno não existe na base de dados!");
+					System.out.println("\nAluno não existe ou não possui empréstimos!");
 				}
 
 				break;
