@@ -6,25 +6,27 @@ import java.util.Scanner;
 
 import com.vanessa.library2.dao.AlunoDAO;
 import com.vanessa.library2.dao.BibliotecarioDAO;
-import com.vanessa.library2.dao.LivroDAO;
+import com.vanessa.library2.dao.LivroDAODecorator;
+import com.vanessa.library2.dao.LivroDAOInterface;
 import com.vanessa.library2.entities.Aluno;
 import com.vanessa.library2.entities.Bibliotecario;
 import com.vanessa.library2.entities.EmprestimoSimples;
 import com.vanessa.library2.entities.Livro;
+import com.vanessa.library2.exceptions.LivroException;
 
 public class DevolucaoController {
 	Scanner t = new Scanner(System.in);
-	Scanner tdouble = new Scanner(System.in);
 	DecimalFormat df = new DecimalFormat("0.00");
 
-	public void devolverEmprestimo() {
+	public void devolverEmprestimo() throws LivroException {
+		LivroDAOInterface dao = new LivroDAODecorator();
 
 		System.out.println("\nDigite o nome do aluno: ");
 		Aluno alunoDevolve = AlunoDAO.getAluno(t.next());
 		System.out.println("Digite o nome do funcionario: ");
 		Bibliotecario bibliotecarioDevolve = BibliotecarioDAO.getBibliotecario(t.next());
 		System.out.println("Digite o nome do livro: ");
-		Livro livroDevolve = LivroDAO.getLivro(t.next());
+		Livro livroDevolve = dao.getLivro(t.next());
 		System.out.println("Digite quantos dias o aluno ficou com o livro: ");
 		int dias = t.nextInt();
 		List<EmprestimoSimples> alunoEmprestimos = alunoDevolve.getEmprestimosRealizados();
@@ -54,10 +56,7 @@ public class DevolucaoController {
 							alunoEmprestimos.remove(alunoEmprestimos.get(i));
 							System.out.println("\nLivro devolvido com sucesso!");
 						}
-
-					} else {
-						System.out.println("Este aluno não tem este livro emprestado.");
-					}
+					} 
 				}
 			} else {
 				System.out.println("Funcionário não permitido na devolução!");

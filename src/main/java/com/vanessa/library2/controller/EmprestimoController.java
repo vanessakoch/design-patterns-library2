@@ -7,29 +7,30 @@ import java.util.Scanner;
 
 import com.vanessa.library2.dao.AlunoDAO;
 import com.vanessa.library2.dao.BibliotecarioDAO;
-import com.vanessa.library2.dao.LivroDAO;
+import com.vanessa.library2.dao.LivroDAODecorator;
+import com.vanessa.library2.dao.LivroDAOInterface;
 import com.vanessa.library2.entities.Aluno;
 import com.vanessa.library2.entities.Bibliotecario;
 import com.vanessa.library2.entities.EmprestimoComposto;
 import com.vanessa.library2.entities.EmprestimoSimples;
 import com.vanessa.library2.entities.EmprestimoLivro;
 import com.vanessa.library2.entities.Livro;
+import com.vanessa.library2.exceptions.LivroException;
 
 public class EmprestimoController {
 	Scanner t = new Scanner(System.in);
 	DecimalFormat df = new DecimalFormat("0.00");
+	LivroDAOInterface daoLivro = new LivroDAODecorator();
 
-
-	public void realizaEmprestimoSimples() {
+	public void realizaEmprestimoSimples() throws LivroException {
 		System.out.println("\nDigite o nome do aluno: ");
 		Aluno alunoEmprestimo = AlunoDAO.getAluno(t.next());
 		System.out.println("Digite o nome do funcionario: ");
 		Bibliotecario bibliotecarioEmprestimo = BibliotecarioDAO.getBibliotecario(t.next());
 		System.out.println("Digite o nome do livro: ");
-		Livro livroEmprestimo = LivroDAO.getLivro(t.next());
+		Livro livroEmprestimo = daoLivro.getLivro(t.next());
 		System.out.println("Digite os dias de empréstimo: ");
 		int diasEmprestimo = t.nextInt();
-		
 
 		if (alunoEmprestimo != null && bibliotecarioEmprestimo != null && livroEmprestimo != null) {
 			if (bibliotecarioEmprestimo.getFuncao().contentEquals("emprestimo")) {
@@ -38,9 +39,9 @@ public class EmprestimoController {
 
 				System.out.println(livroEmprestimo);
 				System.out.println("\nTaxa em caso de atraso: R$ " + df.format(livroEmprestimo.getTaxaAtraso())
-				+ " por dia.\nPeso do livro: " + df.format(livroEmprestimo.getPeso()) + " kg.");
+						+ " por dia.\nPeso do livro: " + df.format(livroEmprestimo.getPeso()) + " kg.");
 				System.out.println("\nEmpréstimo realizado com sucesso!");
-				
+
 			} else {
 				System.out.println("Funcionário não permitido!");
 			}
@@ -49,7 +50,7 @@ public class EmprestimoController {
 		}
 	}
 
-	public void realizaEmprestimoComposto() {
+	public void realizaEmprestimoComposto() throws LivroException {
 		List<EmprestimoLivro> emprestimosList = new ArrayList<EmprestimoLivro>();
 
 		System.out.println("\nDigite o nome do aluno: ");
@@ -59,7 +60,7 @@ public class EmprestimoController {
 
 		while (true) {
 			System.out.println("Digite o nome do livro: ");
-			Livro livroEmprestimo = LivroDAO.getLivro(t.next());
+			Livro livroEmprestimo = daoLivro.getLivro(t.next());
 			System.out.println("Digite os dias de empréstimo: ");
 			int diasEmprestimo = t.nextInt();
 
@@ -70,10 +71,14 @@ public class EmprestimoController {
 					alunoEmprestimo.getEmprestimosRealizados().add((EmprestimoSimples) emprestimo);
 					emprestimosList.add(emprestimo);
 					System.out.println("\nAdicionado com sucesso.");
+				} else {
+					System.out.println("Funcionário não permitido!");
 				}
+			} else {
+				System.out.println("Funcionario, aluno ou livro não existe.");
 			}
 
-			System.out.println("\n[1] Emprestar mais um livro");
+			System.out.println("\n[1] Emprestar livro");
 			System.out.println("[0] Concluir empréstimo");
 
 			int saindo = t.nextInt();

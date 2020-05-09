@@ -7,17 +7,18 @@ import com.vanessa.library2.controller.DevolucaoController;
 import com.vanessa.library2.controller.EmprestimoController;
 import com.vanessa.library2.dao.AlunoDAO;
 import com.vanessa.library2.dao.BibliotecarioDAO;
-import com.vanessa.library2.dao.LivroDAO;
+import com.vanessa.library2.dao.LivroDAODecorator;
+import com.vanessa.library2.dao.LivroDAOInterface;
 import com.vanessa.library2.entities.Aluno;
 import com.vanessa.library2.entities.EmprestimoSimples;
-
+import com.vanessa.library2.exceptions.LivroException;
 
 public class Main {
 	static Scanner t = new Scanner(System.in);
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws LivroException {
+		LivroDAOInterface daoLivros = new LivroDAODecorator();
 
-		LivroDAO.addLivros();
 		AlunoDAO.addAlunos();
 		BibliotecarioDAO.addBibliotecarios();
 
@@ -42,7 +43,7 @@ public class Main {
 					BibliotecarioDAO.getBibliotecarios();
 					break;
 				case 3:
-					LivroDAO.getLivros();
+					daoLivros.getAll();
 					break;
 
 				default:
@@ -75,23 +76,23 @@ public class Main {
 			case 3:
 				DevolucaoController devolve = new DevolucaoController();
 				devolve.devolverEmprestimo();
-
 				break;
 
 			case 4:
-				System.out.println("\nDigite o nome do aluno: ");
-				Aluno alunoEmprestimos = AlunoDAO.getAluno(t.next());
-				List<EmprestimoSimples> seuEmprestimo = alunoEmprestimos.getEmprestimosRealizados();
-				
-				if (alunoEmprestimos != null && seuEmprestimo.size() > 0) {
-					System.out.println("\nEmpréstimos de " + alunoEmprestimos.getNome() + ":");
-					for (int i = 0; i < seuEmprestimo.size(); i++) {
-						System.out.println(seuEmprestimo.get(i) + ", dias de empréstimo: " + seuEmprestimo.get(i).getDiasEmprestimo());
-					}
-				} else {
-					System.out.println("\nAluno não existe ou não possui empréstimos!");
-				}
+				verEmprestimos();
+				break;
 
+			case 5:
+				System.out.println("[1] - Adicionar livro");
+				System.out.println("[2] - Remover livro");
+				int number = t.nextInt();
+
+				if (number == 1) 
+					adicionaLivro();
+				
+				if (number == 2) 
+					removerLivro();
+				
 				break;
 
 			default:
@@ -106,7 +107,71 @@ public class Main {
 		System.out.println("\n[1] - Listar cadastros");
 		System.out.println("[2] - Emprestar livro");
 		System.out.println("[3] - Devolver livro");
-		System.out.println("[4] - Pesquisar empréstimos por nome\n");
+		System.out.println("[4] - Pesquisar empréstimos por nome");
+		System.out.println("[5] - Gerencia livros\n");
 	}
 
+	public static void verEmprestimos() {
+		System.out.println("\nDigite o nome do aluno: ");
+		Aluno alunoEmprestimos = AlunoDAO.getAluno(t.next());
+		List<EmprestimoSimples> seuEmprestimo = alunoEmprestimos.getEmprestimosRealizados();
+
+		if (alunoEmprestimos != null && seuEmprestimo.size() > 0) {
+			System.out.println("\nEmpréstimos de " + alunoEmprestimos.getNome() + ":");
+			for (int i = 0; i < seuEmprestimo.size(); i++) {
+				System.out.println(
+						seuEmprestimo.get(i) + ", dias de empréstimo: " + seuEmprestimo.get(i).getDiasEmprestimo());
+			}
+		} else {
+			System.out.println("\nAluno não existe ou não possui empréstimos!");
+		}
+	}
+
+	public static void adicionaLivro() {
+		LivroDAOInterface daoLivros = new LivroDAODecorator();
+		System.out.println("\nDigite o nome do livro: ");
+		String nomeLivro = t.next();
+		System.out.println("Digite o autor: ");
+		String autorLivro = t.next();
+		System.out.println("Digite o ano: ");
+		int anoLivro = t.nextInt();
+		System.out.println("Digite a taxa que deverá ser paga em caso de atraso de empréstimo: ");
+		double taxaLivro = t.nextDouble();
+		System.out.println("Qual o peso do livro?");
+		double pesoLivro = t.nextDouble();
+
+		try {
+			daoLivros.adicionaLivro(nomeLivro, autorLivro, anoLivro, taxaLivro, pesoLivro);
+		} catch (LivroException e) {
+			System.err.println("Não foi possível adicionar o livro.");
+			System.err.println(e.getMessage());
+		}
+		System.out.println("Livro adicionado com sucesso!");
+
+	}
+
+	public static void removerLivro() {
+		LivroDAOInterface daoLivros = new LivroDAODecorator();
+		boolean livroEmprestado = false;
+		System.out.println("Digite o nome do livro que deseja remover: ");
+		String livroRemover = t.next();
+		for (Aluno aluno : AlunoDAO.alunosList) {
+			if (aluno.getEmprestimo(livroRemover) != null)
+				livroEmprestado = true;
+
+		}
+		if (!livroEmprestado) {
+			try {
+				daoLivros.removeLivro(livroRemover);
+				System.out.println("\nLivro removido com sucesso!");
+
+			} catch (LivroException e) {
+				System.err.println("Não foi possível remover este livro.");
+				System.err.println(e.getMessage());
+			}
+		} else {
+			System.out.println("\nEste livro está emprestado por algum aluno, não pode ser removido!");
+		}
+
+	}
 }
