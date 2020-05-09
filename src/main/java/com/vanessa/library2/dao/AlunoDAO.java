@@ -13,9 +13,9 @@ public class AlunoDAO {
 		alunosList.add(new Aluno(1,"Vanessa", "Analise e Desenvolvimento de Sistemas"));
 		alunosList.add(new Aluno(2,"Felipe", "Analise e Desenvolvimento de Sistemas"));
 		alunosList.add(new Aluno(3,"Ramon", "Analise e Desenvolvimento de Sistemas"));
-		alunosList.add(new Aluno(3,"Leonardo", "Analise e Desenvolvimento de Sistemas"));
-		alunosList.add(new Aluno(4,"Rojie", "Analise e Desenvolvimento de Sistemas"));
-		alunosList.add(new Aluno(5,"Fernando", "Analise e Desenvolvimento de Sistemas"));
+		alunosList.add(new Aluno(4,"Leonardo", "Analise e Desenvolvimento de Sistemas"));
+		alunosList.add(new Aluno(5,"Rojie", "Analise e Desenvolvimento de Sistemas"));
+		alunosList.add(new Aluno(6,"Fernando", "Analise e Desenvolvimento de Sistemas"));
 
 	}
 

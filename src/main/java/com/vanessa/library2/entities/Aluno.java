@@ -1,6 +1,6 @@
 package com.vanessa.library2.entities;
 
-public class Aluno extends Pessoa {
+public class Aluno extends PessoaFisica {
 
 	private String curso;
 

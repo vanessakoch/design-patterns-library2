@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.vanessa.library2.entities.Bibliotecario;
-import com.vanessa.library2.entities.Pessoa;
+import com.vanessa.library2.entities.PessoaFisica;
 
 public class BibliotecarioDAO {
 	public static List<Bibliotecario> bibliotecariosList = new ArrayList<Bibliotecario>();
 
 	public static void addBibliotecarios() {
 		
-		Pessoa bibliotecario1 = new Bibliotecario(1, "Maria", "emprestimo");
-		Pessoa bibliotecario2 = new Bibliotecario(2, "Joao","devolucao");
+		PessoaFisica bibliotecario1 = new Bibliotecario(7, "Maria", "emprestimo");
+		PessoaFisica bibliotecario2 = new Bibliotecario(8, "Joao","devolucao");
 		
 		bibliotecariosList.add((Bibliotecario) bibliotecario1);
 		bibliotecariosList.add((Bibliotecario) bibliotecario2);

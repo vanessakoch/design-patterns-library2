@@ -1,11 +1,11 @@
 package com.vanessa.library2.entities;
 
 public class Devolucao {
-	private Pessoa cliente;
+	private PessoaFisica cliente;
 	private EmprestimoSimples emprestimo;
 	private int diasPosse;
 
-	public Devolucao(Pessoa cliente, EmprestimoSimples emprestimo, int diasPosse) {
+	public Devolucao(PessoaFisica cliente, EmprestimoSimples emprestimo, int diasPosse) {
 		super();
 		this.cliente = cliente;
 		this.emprestimo = emprestimo;
@@ -15,11 +15,11 @@ public class Devolucao {
 	public Devolucao() {
 	}
 
-	public Pessoa getCliente() {
+	public PessoaFisica getCliente() {
 		return cliente;
 	}
 
-	public void setCliente(Pessoa cliente) {
+	public void setCliente(PessoaFisica cliente) {
 		this.cliente = cliente;
 	}
 

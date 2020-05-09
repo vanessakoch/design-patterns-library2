@@ -10,7 +10,9 @@ import com.vanessa.library2.dao.BibliotecarioDAO;
 import com.vanessa.library2.dao.LivroDAODecorator;
 import com.vanessa.library2.dao.LivroDAOInterface;
 import com.vanessa.library2.entities.Aluno;
+import com.vanessa.library2.entities.Biblioteca;
 import com.vanessa.library2.entities.EmprestimoSimples;
+import com.vanessa.library2.entities.Pessoa;
 import com.vanessa.library2.exceptions.LivroException;
 
 public class Main {
@@ -18,6 +20,9 @@ public class Main {
 
 	public static void main(String[] args) throws LivroException {
 		LivroDAOInterface daoLivros = new LivroDAODecorator();
+
+		Pessoa biblioteca = Biblioteca.criaNomeCnpj(9, "Biblioteca_IFSC", "12345678000110");
+		System.out.println(biblioteca);
 
 		AlunoDAO.addAlunos();
 		BibliotecarioDAO.addBibliotecarios();
@@ -87,14 +92,59 @@ public class Main {
 				System.out.println("[2] - Remover livro");
 				int number = t.nextInt();
 
-				if (number == 1) 
+				if (number == 1)
 					adicionaLivro();
-				
-				if (number == 2) 
+
+				if (number == 2)
 					removerLivro();
-				
+
 				break;
 
+			case 6:
+				System.out.println("\n[1] - Adicionar Razão Social e Cnpj");
+				System.out.println("[2] - Adicionar Razão Social e Endereço");
+				System.out.println("[3] - Adicionar Razão Social e Inscrição Estadual");
+				System.out.println("[4] - Adicionar todos os dados\n");
+
+				int escolhaNumero = t.nextInt();
+
+				System.out.println("Digite a Razão Social: ");
+				String razaoSocial = t.next();
+				switch (escolhaNumero) {
+				case 1:
+					System.out.println("Digite o Cnpj (14 dígitos): ");
+					String cnpj = t.next();
+					biblioteca = Biblioteca.criaNomeCnpj(biblioteca.getCodigo(), razaoSocial, cnpj);
+					System.out.println(biblioteca);
+					break;
+				case 2:
+					System.out.println("Digite o endereço: ");
+					String endereco = t.next();
+					biblioteca = Biblioteca.criaNomeEndereco(biblioteca.getCodigo(), razaoSocial, endereco);
+					System.out.println(biblioteca);
+					break;
+				case 3:
+					System.out.println("Digite a Inscrição Estadual: ");
+					String inscricaoEstadual = t.next();
+					biblioteca = Biblioteca.criarNomeInscricao(biblioteca.getCodigo(), razaoSocial, inscricaoEstadual);
+					System.out.println(biblioteca);
+					break;
+				case 4:
+					System.out.println("Digite o Cnpj (14 dígitos): ");
+					String cnpjAll = t.next();
+					System.out.println("Digite o endereço: ");
+					String enderecoAll = t.next();
+					System.out.println("Digite a Inscrição Estadual: ");
+					String ie = t.next();
+					biblioteca = Biblioteca.incluirTudo(biblioteca.getCodigo(), razaoSocial, cnpjAll, enderecoAll, ie);
+					System.out.println(biblioteca);
+
+					break;
+
+				default:
+					break;
+				}
+				break;
 			default:
 				break;
 			}
@@ -108,7 +158,8 @@ public class Main {
 		System.out.println("[2] - Emprestar livro");
 		System.out.println("[3] - Devolver livro");
 		System.out.println("[4] - Pesquisar empréstimos por nome");
-		System.out.println("[5] - Gerencia livros\n");
+		System.out.println("[5] - Gerenciar livros");
+		System.out.println("[6] - Gerenciar biblioteca\n");
 	}
 
 	public static void verEmprestimos() {

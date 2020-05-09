@@ -42,16 +42,20 @@ public class DevolucaoController {
 							System.out.println("Deverá pagar R$ " + df.format(valorAtraso) + " de taxa de atraso.");
 							System.out.println("Quanto dará de dinheiro?");
 							double entrada = t.nextDouble();
-							double troco = entrada - valorAtraso;
-
-							ProcessadorCaixa caixa = new Moeda1Real(
-									new Moeda50Centavos(new Moeda25Centavos(new Moeda10Centavos(new Moeda5Centavos(null)))));
-							System.out.println("\nProcessamento de caixa ...");
-							caixa.processaDinheiro(valorAtraso);
-							System.out.println("Recebeu troco de: R$ " + df.format(troco));
-
-							alunoEmprestimos.remove(alunoEmprestimos.get(i));
-							System.out.println("\nLivro devolvido com sucesso!");
+							if(entrada >= valorAtraso) {
+								double troco = entrada - valorAtraso;
+								ProcessadorCaixa caixa = new Moeda1Real(
+										new Moeda50Centavos(new Moeda25Centavos(new Moeda10Centavos(new Moeda5Centavos(null)))));
+								System.out.println("\nProcessamento de caixa ...");
+								caixa.processaDinheiro(valorAtraso);
+								System.out.println("Recebeu troco de: R$ " + df.format(troco));
+	
+								alunoEmprestimos.remove(alunoEmprestimos.get(i));
+								System.out.println("\nLivro devolvido com sucesso!");
+							} else {
+								System.out.println("Livro não devolvido, valor não suficiente!");
+							}
+							
 						} else {
 							alunoEmprestimos.remove(alunoEmprestimos.get(i));
 							System.out.println("\nLivro devolvido com sucesso!");

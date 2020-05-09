@@ -1,6 +1,6 @@
 package com.vanessa.library2.entities;
 
-public class Bibliotecario extends Pessoa {
+public class Bibliotecario extends PessoaFisica {
 	private String funcao;
 
 	public Bibliotecario(int codigo, String nome, String funcao) {

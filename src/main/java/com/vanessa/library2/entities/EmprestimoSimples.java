@@ -1,12 +1,12 @@
 package com.vanessa.library2.entities;
 
 public class EmprestimoSimples implements EmprestimoLivro {
-	private Pessoa cliente;
+	private PessoaFisica cliente;
 	private Bibliotecario funcionario;
 	private Livro livro;
 	private int diasEmprestimo;
 
-	public EmprestimoSimples(Pessoa cliente, Bibliotecario funcionario, Livro livro, int diasEmprestimo) {
+	public EmprestimoSimples(PessoaFisica cliente, Bibliotecario funcionario, Livro livro, int diasEmprestimo) {
 		super();
 		this.cliente = cliente;
 		this.funcionario = funcionario;
@@ -14,11 +14,11 @@ public class EmprestimoSimples implements EmprestimoLivro {
 		this.diasEmprestimo = diasEmprestimo;
 	}
 
-	public Pessoa getCliente() {
+	public PessoaFisica getCliente() {
 		return cliente;
 	}
 
-	public void setCliente(Pessoa cliente) {
+	public void setCliente(PessoaFisica cliente) {
 		this.cliente = cliente;
 	}
 
